@@ -23,7 +23,18 @@
     <div id="unity-warning"> </div>
   </div>
   <script>
-    vkBridge.send("VKWebAppInit", {});
+    vkBridge.send('VKWebAppInit')
+      .then((data) => {
+        if (data.result) {
+          onResize();
+        } else {
+          // Ошибка
+        }
+      })
+      .catch((error) => {
+        // Ошибка
+        console.log(error);
+      });;
 
     vkBridge.send('VKWebAppCheckNativeAds', { ad_format: 'interstitial' });
 
@@ -63,26 +74,10 @@
       console.log('In resize');
 
       let h = window.innerHeight;
-      let w = Math.floor(h * 9 / 16);
 
       console.log('h:' + h);
-      console.log('w:' + w);
-
-      let isMobile = false;
-
-      try {
-        isMobile = window.ysdk.deviceInfo.isMobile();
-      }
-      catch {
-        console.log('in catch');
-      }
-
-      console.log('is mobile: ' + isMobile);
 
       mainElement.style.height = h + 'px';
-      if (!isMobile) {
-        mainElement.style.width = w + 'px';
-      }
     }
   </script>
   <script>
